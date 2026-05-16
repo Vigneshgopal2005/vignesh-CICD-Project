@@ -12,8 +12,10 @@ pipeline {
 
         stage('Build and Test') {
             steps {
+
                 sh 'java -version'
                 sh 'mvn -version'
+
                 sh '''
                 rm -rf target
                 mvn clean package
@@ -52,9 +54,9 @@ pipeline {
 
                 script {
 
-                    sh '''
+                    sh """
                     docker build -t ${DOCKER_IMAGE} .
-                    '''
+                    """
 
                     def dockerImage=docker.image("${DOCKER_IMAGE}")
 
@@ -86,9 +88,9 @@ pipeline {
 
                     git config user.name "Vigneshgopal2005"
 
-                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" cicd-project/deployment.yaml
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yaml
 
-                    git add cicd-project/deployment.yaml
+                    git add deployment.yaml
 
                     git commit -m "Update image ${BUILD_NUMBER}" || true
 
@@ -108,7 +110,7 @@ pipeline {
 
                 oc project vigneshgopal2005-dev
 
-                oc apply -f cicd-project/deployment.yaml
+                oc apply -f deployment.yaml
                 '''
             }
         }
