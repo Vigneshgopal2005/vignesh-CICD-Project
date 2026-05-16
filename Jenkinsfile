@@ -14,7 +14,10 @@ pipeline {
             steps {
                 sh 'java -version'
                 sh 'mvn -version'
-                sh 'mvn clean package'
+                sh '''
+                rm -rf target
+                mvn clean package
+                '''
             }
         }
 
