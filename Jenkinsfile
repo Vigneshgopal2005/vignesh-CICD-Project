@@ -105,12 +105,14 @@ pipeline {
             steps {
 
                 sh '''
-                oc login --token=sha256~TBpU2qcfxujAs0XrExzxPSI_hN24OYfSTg9u_1GDoB8 \
+                oc login --token=sha256~GefWWuLx032U7zzslJFvWHu4Ke8rJALY6KxojGXX_RI \
                 --server=https://api.rm1.0a51.p1.openshiftapps.com:6443
 
                 oc project vigneshgopal2005-dev
 
                 oc apply -f deployment.yaml
+
+                oc get pods
                 '''
             }
         }
