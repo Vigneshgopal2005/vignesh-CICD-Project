@@ -1,10 +1,6 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.6-openjdk-11'
-            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+
+    agent any
 
     stages {
 
@@ -16,18 +12,23 @@ pipeline {
 
         stage('Build and Test') {
             steps {
-                sh 'ls -ltr'
+                sh 'java -version'
+                sh 'mvn -version'
                 sh 'mvn clean package'
             }
         }
 
         stage('Static Code Analysis') {
+
             environment {
                 SONAR_URL='http://15.152.97.7:9000'
             }
 
             steps {
-                withCredentials([string(credentialsId:'sonarqube',variable:'SONAR_AUTH_TOKEN')]) {
+
+                withCredentials([string(
+                credentialsId:'sonarqube',
+                variable:'SONAR_AUTH_TOKEN')]) {
 
                     sh '''
                     mvn sonar:sonar \
@@ -73,7 +74,9 @@ pipeline {
 
             steps {
 
-                withCredentials([string(credentialsId:'github',variable:'GITHUB_TOKEN')]) {
+                withCredentials([string(
+                credentialsId:'github',
+                variable:'GITHUB_TOKEN')]) {
 
                     sh '''
                     git config user.email "vigneshgopal2005@gmail.com"
@@ -97,7 +100,8 @@ pipeline {
             steps {
 
                 sh '''
-                oc login --token=sha256~TBpU2qcfxujAs0XrExzxPSI_hN24OYfSTg9u_1GDoB8 --server=https://api.rm1.0a51.p1.openshiftapps.com:6443
+                oc login --token=sha256~TBpU2qcfxujAs0XrExzxPSI_hN24OYfSTg9u_1GDoB8 \
+                --server=https://api.rm1.0a51.p1.openshiftapps.com:6443
 
                 oc project vigneshgopal2005-dev
 
