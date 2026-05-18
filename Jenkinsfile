@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONAR_URL = "http://15.152.97.7:9000"
+        SONAR_URL = "http://15.168.172.78:9000"
         DOCKER_IMAGE = "vigneshgopal2005/ultimate-cicd:${BUILD_NUMBER}"
     }
 
@@ -79,8 +79,7 @@ pipeline {
         stage('Deploy to OpenShift') {
             steps {
                 sh '''
-                oc login --token=sha256~ZmufvrqxSleA7NKEIxqxQgtIk8DSuoYz_vGUmV4X-Mo --server=https://api.rm1.0a51.p1.openshiftapps.com:6443
-
+                oc login --token=sha256~MSfdasdDZjkpAC3F2njzgixGD5oROitdzo9_InedYWs --server=https://api.rm1.0a51.p1.openshiftapps.com:6443
                 oc project vigneshgopal2005-dev
 
                 oc apply -f deployment.yaml
